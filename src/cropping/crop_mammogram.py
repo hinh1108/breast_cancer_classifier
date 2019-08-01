@@ -322,7 +322,27 @@ def crop_mammogram_one_image(scan, input_file_path, output_file_path, num_iterat
             os.makedirs(target_parent_dir)
         
         try:
-            saving_images.save_image_as_png(image[top:bottom, left:right], output_file_path)
+            # height, width, number of channels in image
+            height = image.shape[0]
+            width = image.shape[1]
+            if (bottom - top) > 2600 :
+                y = int (top + round((bottom - top - 2600)/2))
+            else :
+                y = int (top - round((2600 - bottom - top)/2))
+
+            if (y + 2600) > bottom :
+                y = bottom - 2600
+
+            if y<0:
+                y = 0
+
+            if 0 <= (width - right) <= 200:
+                x = right - 2000
+            else : 
+                x = left
+            #print(y)  
+            saving_images.save_image_as_png(image[y:y + 2600, x:x + 2000], output_file_path)
+            #saving_images.save_image_as_png(image[top:bottom, left:right], output_file_path)
         except Exception as error:
             print(input_file_path, "\n\tError while saving image.", str(error))
 

@@ -25,6 +25,7 @@ import argparse
 
 import src.cropping.crop_mammogram as crop_mammogram
 import src.utilities.pickling as pickling
+import os
 
 
 def crop_single_mammogram(mammogram_path, horizontal_flip, view,
@@ -65,15 +66,53 @@ def main():
     parser.add_argument('--buffer-size', default=50, type=int)
     args = parser.parse_args()
 
+    files = []
+    # r=root, d=directories, f = files
+    for r, d, f in os.walk(args.mammogram_path):
+        for file in f:
+            if '.png' in file:
+                files.append(os.path.join(r, file))
+    files.sort()
+    #for f in files:
+        #print(f)
+        
     crop_single_mammogram(
-        mammogram_path=args.mammogram_path,
-        view=args.view,
+        mammogram_path=files[0],
+        view="R-CC",
         horizontal_flip=args.horizontal_flip,
-        cropped_mammogram_path=args.cropped_mammogram_path,
+        cropped_mammogram_path=args.cropped_mammogram_path+"//"+"R-CC.png",
         metadata_path=args.metadata_path,
         num_iterations=args.num_iterations,
         buffer_size=args.buffer_size,
     )
+    crop_single_mammogram(
+        mammogram_path=files[1],
+        view="L-CC",
+        horizontal_flip=args.horizontal_flip,
+        cropped_mammogram_path=args.cropped_mammogram_path+"//"+"L-CC.png",
+        metadata_path=args.metadata_path,
+        num_iterations=args.num_iterations,
+        buffer_size=args.buffer_size,
+    )
+    crop_single_mammogram(
+        mammogram_path=files[2],
+        view="R-MLO",
+        horizontal_flip=args.horizontal_flip,
+        cropped_mammogram_path=args.cropped_mammogram_path+"//"+"R-MLO.png",
+        metadata_path=args.metadata_path,
+        num_iterations=args.num_iterations,
+        buffer_size=args.buffer_size,
+    )
+    crop_single_mammogram(
+        mammogram_path=files[3],
+        view="L-MLO",
+        horizontal_flip=args.horizontal_flip,
+        cropped_mammogram_path=args.cropped_mammogram_path+"//"+"L-MLO.png",
+        metadata_path=args.metadata_path,
+        num_iterations=args.num_iterations,
+        buffer_size=args.buffer_size,
+    )
+    
 
 
 if __name__ == "__main__":
