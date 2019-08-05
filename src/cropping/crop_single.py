@@ -73,8 +73,6 @@ def main():
             if '.png' in file:
                 files.append(os.path.join(r, file))
     files.sort()
-    #for f in files:
-        #print(f)
         
     crop_single_mammogram(
         mammogram_path=files[0],
