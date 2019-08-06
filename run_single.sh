@@ -28,6 +28,7 @@ cd /Users/hinhct/work/cdha/Birads-detection/BIRADS_classifier
 
 python birads_prediction_tf.py --image-path $OUT_PATH
 
+cat result.json
 #check enable delete output folder
 if [ "$ENABLE_DELETE" =  "$4" ]
 then
